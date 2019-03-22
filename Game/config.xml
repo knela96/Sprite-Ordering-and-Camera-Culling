@@ -1,0 +1,42 @@
+<!-- Config file for the game-->
+
+<config>
+  <app framerate_cap="30" Cap="true">
+    <title>Sprite Ordering and Camera Culling</title>
+    <organization>UPC</organization>
+  </app>
+  
+  <renderer>
+    <vsync value="false"/>
+    <camera camera_x="320" camera_y="320"/>
+  </renderer>
+
+  <window>
+    <resolution default="false" width="1500" height="1000" scale="1"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <audio>
+    <music_volume value="64"/>
+    <fx_volume value="128"/>
+  </audio>
+
+  <gui>
+    <atlas file="gui/Button.png"/>
+  </gui>
+	
+  <entity>
+    <player>
+      <position pos_x="100" pos_y="215"/>
+      <velocity value="100"/>
+    </player>
+  </entity>
+
+  <map>
+    <folder>maps/</folder>
+  </map>
+
+</config>

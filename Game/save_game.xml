@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<game_state>
+	<audio>
+		<music_volume value="64" />
+		<fx_volume value="128" />
+	</audio>
+	<entity>
+		<player x="60" y="828.333374" Map="2" score="0" lives="3" coins="1" />
+	</entity>
+	<renderer>
+		<camera x="0" y="-110" />
+	</renderer>
+</game_state>
