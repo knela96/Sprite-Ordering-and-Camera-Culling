@@ -147,6 +147,9 @@ void j1Render::reOrder() {
 				img1->order = img2->order + 1;
 			}
 			else if (img1->height == img2->height - 1) {//check
+
+				int i = 0;
+
 				for (std::list<ImageRender*>::iterator aux_map = map_sprites.begin(); aux_map != map_sprites.end(); ++aux_map)
 				{
 					ImageRender* aux = *aux_map;
@@ -161,11 +164,18 @@ void j1Render::reOrder() {
 					{
 						img1->order = aux->order + 1;
 						LOG("found x-1");
-					}else if (pos3.x == pos1.x + 1 && pos3.y == pos1.y)
+					}
+					else if (pos3.x == pos1.x + 1 && pos3.y == pos1.y)
 					{
 						LOG("found x+1");
 						img1->order = aux->order - 1;
-					}else if (pos3.y == pos1.y - 1 && pos3.x == pos1.x)
+					}
+					else if (pos3.x == pos1.x - 1 && pos3.y == pos1.y - 1)
+					{
+						img1->order = aux->order + 1;
+						LOG("found x-1 y -1");
+					}
+					else if (pos3.y == pos1.y - 1 && pos3.x == pos1.x)
 					{
 						LOG("found y-1");
 						img1->order = aux->order + 1;
@@ -173,6 +183,11 @@ void j1Render::reOrder() {
 					{
 						img1->order = aux->order - 1;
 						LOG("found y+1");
+					}
+					else if (pos3.x == pos1.x + 1 && pos3.y == pos1.y + 1)
+					{
+						img1->order = aux->order - 1;
+						LOG("found x+1 y +1");
 					}
 					else if (pos3.y == pos1.y && pos3.x == pos1.x) {
 						img1->order = aux->order + 1;
