@@ -7,6 +7,7 @@
 #include "j1Colliders.h"
 #include "j1Map.h"
 #include <math.h>
+#include "j1Input.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -37,6 +38,7 @@ void j1Map::Draw()
 	uint tile_indx=0;
 	uint layer_indx = 0;
 	uint background_indx=0;
+	uint order = 0;
 
 	p2List_item<MapLayer*>* item = data.layers.start;
 
@@ -53,9 +55,12 @@ void j1Map::Draw()
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					iPoint pos = MapToWorld(x, y);
 					Rectvec.push_back(new SDL_Rect(tileset->GetTileRect(tile_id)));
-					App->render->Push(tile_indx,layer_indx,tileset->texture, pos.x, pos.y, Rectvec[tile_indx]);
+					App->render->Push(order,layer_indx,tileset->texture, pos.x, pos.y, Rectvec[tile_indx]);
 					tile_indx++;
+
+
 				}
+				order++;
 			}
 		}
 		layer_indx++;
@@ -198,16 +203,8 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
-
-	// Translates x,y coordinates from map positions to world positions
-	if (data.type == MapTypes::MAPTYPE_ORTHOGONAL) {
-		ret.x = x * data.tile_width;
-		ret.y = y * data.tile_height;
-	}
-	else if (data.type == MapTypes::MAPTYPE_ISOMETRIC) {
-		ret.x = (x - y) * (data.tile_width / 2);
-		ret.y = (x + y) * (data.tile_height / 2);
-	}
+	ret.x = (x - y) * (data.tile_width / 2);
+	ret.y = (x + y) * (data.tile_height / 2);
 
 	return ret;
 }
@@ -216,16 +213,8 @@ iPoint j1Map::WorldToMap(int x, int y) const
 {
 	iPoint ret(0, 0);
 
-	// Orthographic world to map coordinates
-	if (data.type == MapTypes::MAPTYPE_ORTHOGONAL) {
-		ret.x = x / data.tile_width;
-		ret.y = y / data.tile_height;
-	}
-	// Isometric world to map coordinates
-	else if (data.type == MapTypes::MAPTYPE_ISOMETRIC) {
-		ret.x = (x / (data.tile_width / 2) + y / (data.tile_height / 2)) / 2;
-		ret.y = (y / (data.tile_height / 2) - x / (data.tile_width / 2)) / 2;
-	}
+	ret.x = (x / (data.tile_width / 2) + y / (data.tile_height / 2)) / 2;
+	ret.y = (y / (data.tile_height / 2) - x / (data.tile_width / 2)) / 2;
 
 	return ret;
 }
