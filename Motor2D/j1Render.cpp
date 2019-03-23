@@ -160,37 +160,46 @@ void j1Render::reOrder() {
 
 					iPoint pos3 = App->map->WorldToMap(aux->x, aux->y);
 
-					if (pos3.x == pos1.x - 1 && pos3.y == pos1.y)
+					if (pos3.x == pos1.x - 1 && pos3.y == pos1.y) //left
 					{
+						i++;
 						img1->order = aux->order + 1;
 						LOG("found x-1");
 					}
-					else if (pos3.x == pos1.x + 1 && pos3.y == pos1.y)
+					else if (pos3.x == pos1.x + 1 && pos3.y == pos1.y)//right
 					{
-						LOG("found x+1");
+						i++;
 						img1->order = aux->order - 1;
+						LOG("found x+1");
 					}
-					else if (pos3.x == pos1.x - 1 && pos3.y == pos1.y - 1)
+					else if (pos3.x == pos1.x - 1 && pos3.y == pos1.y - 1)//top-left
 					{
 						img1->order = aux->order + 1;
 						LOG("found x-1 y -1");
 					}
-					else if (pos3.y == pos1.y - 1 && pos3.x == pos1.x)
+					else if (pos3.y == pos1.y - 1 && pos3.x == pos1.x)//top
 					{
-						LOG("found y-1");
+						i++;
 						img1->order = aux->order + 1;
-					}else if (pos3.y == pos1.y + 1 && pos3.x == pos1.x)
+						LOG("found y-1");
+					}else if (pos3.y == pos1.y + 1 && pos3.x == pos1.x)//down
 					{
-						img1->order = aux->order - 1;
-						LOG("found y+1");
+						if (i < 1) {
+							i++;
+							img1->order = aux->order - 1;
+							LOG("found y+1");
+						}
 					}
-					else if (pos3.x == pos1.x + 1 && pos3.y == pos1.y + 1)
+					else if (pos3.x == pos1.x + 1 && pos3.y == pos1.y + 1)//bottom-right
 					{
+						i++;
 						img1->order = aux->order - 1;
 						LOG("found x+1 y +1");
 					}
-					else if (pos3.y == pos1.y && pos3.x == pos1.x) {
+					else if (pos3.y == pos1.y && pos3.x == pos1.x)//right
+					{
 						img1->order = aux->order + 1;
+						LOG("inside");
 					}
 				}
 			}
