@@ -48,8 +48,8 @@ bool j1Render::Awake(pugi::xml_node& config)
 		if (App->win->screen_surface->w == 1500){
 			camera.x = 0;
 			camera.y = 0;
-			camera.w = App->win->screen_surface->w-320;
-			camera.h = App->win->screen_surface->h-320;
+			camera.w = App->win->screen_surface->w / 3;
+			camera.h = App->win->screen_surface->h / 3;
 		}
 		else{
 
@@ -69,7 +69,7 @@ bool j1Render::Start()
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
 
-	FullMap = false;
+	FullMap = true;
 
 	int height = App->map->data.height * 32;
 	int width = App->map->data.width * 32;
@@ -84,6 +84,7 @@ bool j1Render::PreUpdate()
 {
 	BROFILER_CATEGORY("PreUpdate Render", Profiler::Color::Magenta);
 	SDL_RenderClear(renderer);
+
 
 	for (list<ImageRender*>::const_iterator it = map_sprites.begin(); it != map_sprites.end(); ++it)
 	{
@@ -121,6 +122,8 @@ bool j1Render::Update(float dt)
 	reOrder();//Eric
 	OrderBlit(OrderToRender);//blit
 
+
+
 	tree->Clear();
 	Images.clear();
 	return true;
@@ -131,104 +134,74 @@ void j1Render::reOrder() {
 	int behind = -1;
 	int loworder = -1;
 	int highorder = -1;
-	/*for (std::list<ImageRender*>::iterator item_map = map_sprites.begin(); item_map != map_sprites.end(); ++item_map)
-	{*/
+	for (std::list<ImageRender*>::iterator item_map = map_sprites.begin(); item_map != map_sprites.end(); ++item_map)
+	{
+		ImageRender* img2 = *item_map;
 		for (std::list<ImageRender*>::iterator item = entities_sprites.begin(); item != entities_sprites.end(); ++item)
 		{
 			ImageRender* img1 = *item;
-			ImageRender* img2 = *map_sprites.begin();
 
 			iPoint pos1 = App->map->WorldToMap(img1->x, img1->y);
 			iPoint pos2 = App->map->WorldToMap(img2->x, img2->y);
 
-			LOG("%i - %i / %i - %i", pos1.x, pos1.y, pos2 .x, pos2.y);
+			//LOG("%i - %i / %i - %i", pos1.x, pos1.y, pos2 .x, pos2.y);
 
 			if (img1->height >= img2->height) {
 				img1->order = img2->order + 1;
 			}
 			else if (img1->height == img2->height - 1) {//check
 
-				int i = 0;
-
-				for (std::list<ImageRender*>::iterator aux_map = map_sprites.begin(); aux_map != map_sprites.end(); ++aux_map)
+				if (pos2.x == pos1.x - 1 && pos2.y == pos1.y) //left
 				{
-					ImageRender* aux = *aux_map;
-
-
-					if (aux->height > img2->height)
-						break;
-
-					iPoint pos3 = App->map->WorldToMap(aux->x, aux->y);
-
-					if (pos3.x == pos1.x - 1 && pos3.y == pos1.y) //left
-					{
-						i++;
-						img1->order = aux->order + 1;
-						LOG("found x-1");
-					}
-					else if (pos3.x == pos1.x + 1 && pos3.y == pos1.y)//right
-					{
-						i++;
-						img1->order = aux->order - 1;
-						LOG("found x+1");
-					}
-					else if (pos3.x == pos1.x - 1 && pos3.y == pos1.y - 1)//top-left
-					{
-						img1->order = aux->order + 1;
-						LOG("found x-1 y -1");
-					}
-					else if (pos3.y == pos1.y - 1 && pos3.x == pos1.x)//top
-					{
-						i++;
-						img1->order = aux->order + 1;
-						LOG("found y-1");
-					}else if (pos3.y == pos1.y + 1 && pos3.x == pos1.x)//down
-					{
-						if (i < 1) {
-							i++;
-							img1->order = aux->order - 1;
-							LOG("found y+1");
-						}
-					}
-					else if (pos3.x == pos1.x + 1 && pos3.y == pos1.y + 1)//bottom-right
-					{
-						i++;
-						img1->order = aux->order - 1;
-						LOG("found x+1 y +1");
-					}
-					else if (pos3.y == pos1.y && pos3.x == pos1.x)//right
-					{
-						img1->order = aux->order + 1;
-						LOG("inside");
-					}
-				}
-			}
-			
-				/*if (img1->y + 5 > img2->y && img1->order == img2->order) {
 					img1->order = img2->order + 1;
+					//LOG("found x-1");
 				}
-				else {
-					if (img1->y + 5 < img2->y && img1->order == img2->order) {
+				else if (pos2.x == pos1.x + 1 && pos2.y == pos1.y)//right
+				{
+					img1->order = img2->order - 1;
+					//LOG("found x+1");
+				}
+				else if (pos2.x == pos1.x - 1 && pos2.y == pos1.y - 1)//top-left
+				{
+					img1->order = img2->order + 1;
+					//LOG("found x-1 y -1");
+				}
+				else if (pos2.y == pos1.y - 1 && pos2.x == pos1.x)//top
+				{
+					img1->order = img2->order + 1;
+					//LOG("found y-1");
+				}/*else if (pos2.y == pos1.y + 1 && pos2.x == pos1.x)//down
+				{
+					if (i < 1) {
+						i++;
 						img1->order = img2->order - 1;
-						behind = true;
+						LOG("found y+1");
 					}
+				}
+				else if (pos2.x == pos1.x + 1 && pos2.y == pos1.y + 1)//bottom-right
+				{
+					i++;
+					img1->order = img2->order - 1;
+					LOG("found x+1 y +1");
+				}
+				else if (pos2.y == pos1.y && pos2.x == pos1.x)//right
+				{
+					img1->order = img2->order + 1;
+					LOG("inside");
 				}*/
-			if (behind == 2)
-				break;
-		}/*
-		if (behind == 2)
-			break;
-	}*/
-	for (std::list<ImageRender*>::iterator item_map = map_sprites.begin(); item_map != map_sprites.end(); ++item_map)
+			}
+		}
+		OrderToRender.push(img2);
+	}
+	/*for (std::list<ImageRender*>::iterator item_map = map_sprites.begin(); item_map != map_sprites.end(); ++item_map)
 	{
 		ImageRender* img2 = *item_map;
 		OrderToRender.push(img2);
-	}
+	}*/
 
 	for (std::list<ImageRender*>::iterator item = entities_sprites.begin(); item != entities_sprites.end(); ++item)
 	{
 		ImageRender* img1 = *item;
-
 		OrderToRender.push(img1);
 	}
 }
@@ -239,6 +212,8 @@ bool j1Render::PostUpdate()
 	BROFILER_CATEGORY("PostUpdate Render", Profiler::Color::MediumAquaMarine);
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
+
+
 	return true;
 }
 
@@ -478,12 +453,12 @@ bool j1Render::OrderBlit(priority_queue<ImageRender*, vector<ImageRender*>, Comp
 		}
 
 		SDL_Point* point = NULL;
-		SDL_Point aux;
+		SDL_Point img2;
 
 		if (Image->pivot_x != INT_MAX && Image->pivot_y != INT_MAX){
-			aux.x = Image->pivot_x;
-			aux.y = Image->pivot_y;
-			point = &aux;
+			img2.x = Image->pivot_x;
+			img2.y = Image->pivot_y;
+			point = &img2;
 		}
 		if (SDL_RenderCopyEx(renderer, Image->tex, Image->section, &r, Image->angle, point, flag) != 0){
 			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());

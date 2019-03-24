@@ -17,7 +17,7 @@ public:
 	ImageRender(uint order, uint height,SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, SDL_Rect rect) :
 		order(order),height(height),tex(texture), x(x), y(y), section(section), scale(scale), speed(speed),angle(angle),pivot_x(pivot_x), pivot_y(pivot_y),rect(rect){}
 
-	uint Ordering()const
+	float Ordering()const
 	{
 		return order;
 	}
@@ -34,7 +34,7 @@ public:
 	int					pivot_x;
 	int					pivot_y;
 
-	uint				order;
+	float				order;
 	uint				height;
 };
 
@@ -72,7 +72,7 @@ public:
 	bool DrawCircle(int x1, int y1, int redius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
 	bool InsideCamera(const SDL_Rect& rect)const;
 	void PushVector(uint order, uint height, SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
-	void j1Render::PushFromVector(vector<ImageRender*> sprites);
+	void PushFromVector(vector<ImageRender*> sprites);
 	void checkOrder(vector<ImageRender*>& sprites);
 	void SetBackgroundColor(SDL_Color color);
 
