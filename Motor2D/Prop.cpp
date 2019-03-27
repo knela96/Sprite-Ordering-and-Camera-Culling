@@ -17,8 +17,8 @@ Prop::~Prop(){}
 bool Prop::Update(float dt)
 {
 	//TODO 2: Create a method that compares adn determines if the prop has to be rendered before or after the player
-	if (App->entities->player->position.y < position.y) { order = App->entities->player->order + 1;}
-	else { order = App->entities->player->order - 1;}
+	if (App->entities->player->position.y < position.y) { order = App->entities->player->order + 0.1;}
+	else { order = App->entities->player->order - 0.1;}
 
 	return true;
 }

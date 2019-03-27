@@ -141,7 +141,7 @@ void j1Render::reOrder() {
 		{
 			ImageRender* img1 = *item;
 
-			iPoint pos1 = App->map->WorldToMap(img1->x, img1->y);
+			iPoint pos1 = App->map->WorldToMap(img1->x + img1->rect.w/2, img1->y);
 			iPoint pos2 = App->map->WorldToMap(img2->x, img2->y);
 
 			//LOG("%i - %i / %i - %i", pos1.x, pos1.y, pos2 .x, pos2.y);
@@ -154,55 +154,50 @@ void j1Render::reOrder() {
 				if (pos2.x == pos1.x - 1 && pos2.y == pos1.y) //left
 				{
 					img1->order = img2->order + 1;
-					//LOG("found x-1");
 				}
 				else if (pos2.x == pos1.x + 1 && pos2.y == pos1.y)//right
 				{
 					img1->order = img2->order - 1;
-					//LOG("found x+1");
 				}
 				else if (pos2.x == pos1.x - 1 && pos2.y == pos1.y - 1)//top-left
 				{
 					img1->order = img2->order + 1;
-					//LOG("found x-1 y -1");
 				}
 				else if (pos2.y == pos1.y - 1 && pos2.x == pos1.x)//top
 				{
 					img1->order = img2->order + 1;
-					//LOG("found y-1");
-				}/*else if (pos2.y == pos1.y + 1 && pos2.x == pos1.x)//down
-				{
-					if (i < 1) {
-						i++;
-						img1->order = img2->order - 1;
-						LOG("found y+1");
-					}
 				}
-				else if (pos2.x == pos1.x + 1 && pos2.y == pos1.y + 1)//bottom-right
-				{
-					i++;
-					img1->order = img2->order - 1;
-					LOG("found x+1 y +1");
-				}
-				else if (pos2.y == pos1.y && pos2.x == pos1.x)//right
-				{
+				else if (pos2.y == pos1.y && pos2.x == pos1.x) {
 					img1->order = img2->order + 1;
-					LOG("inside");
-				}*/
+				}
 			}
+			else if (img1->height == img2->height - 2) {
+				if ((pos2.y == pos1.y - 1) && (pos2.x == pos1.x - 2))//top
+				{
+					img1->order = img2->order + 1; LOG("TOP");
+				}else if (pos2.y == pos1.y - 1 && pos2.x == pos1.x - 1)//left
+				{
+					img1->order = img2->order + 1; LOG("LEFT");
+				}
+			}
+			
 		}
 		OrderToRender.push(img2);
 	}
-	/*for (std::list<ImageRender*>::iterator item_map = map_sprites.begin(); item_map != map_sprites.end(); ++item_map)
-	{
-		ImageRender* img2 = *item_map;
-		OrderToRender.push(img2);
-	}*/
+	ImageRender* player = *entities_sprites.begin();
 
 	for (std::list<ImageRender*>::iterator item = entities_sprites.begin(); item != entities_sprites.end(); ++item)
 	{
 		ImageRender* img1 = *item;
+		
+		if (player != img1) {
+			if (img1->y + img1->rect.h < player->y + player->rect.h) {
+				img1->order = player->order - 0.1;
+			}
+		}
 		OrderToRender.push(img1);
+
+		iPoint pos1 = App->map->WorldToMap(img1->x, img1->y); LOG("%i / %i", pos1.x, pos1.y);
 	}
 }
 
