@@ -130,10 +130,7 @@ bool j1Render::Update(float dt)
 }
 
 void j1Render::reOrder() {
-	int order = 0;
-	int behind = -1;
-	int loworder = -1;
-	int highorder = -1;
+	bool behind = false;
 	for (std::list<ImageRender*>::iterator item_map = map_sprites.begin(); item_map != map_sprites.end(); ++item_map)
 	{
 		ImageRender* img2 = *item_map;
@@ -141,43 +138,86 @@ void j1Render::reOrder() {
 		{
 			ImageRender* img1 = *item;
 
-			iPoint pos1 = App->map->WorldToMap(img1->x + img1->rect.w/2, img1->y);
+			iPoint pos1 = App->map->WorldToMap(img1->x, img1->y + 4);
 			iPoint pos2 = App->map->WorldToMap(img2->x, img2->y);
 
-			//LOG("%i - %i / %i - %i", pos1.x, pos1.y, pos2 .x, pos2.y);
-
 			if (img1->height >= img2->height) {
-				img1->order = img2->order + 1;
+				if ((pos2.x == pos1.x - 1 && pos2.y == pos1.y) || //left
+					(pos2.x == pos1.x - 1 && pos2.y == pos1.y - 1) || //top-left
+					(pos2.x == pos1.x && pos2.y == pos1.y - 1) ||//top
+					(pos2.x == pos1.x + 1 && pos2.y == pos1.y -1) ||//top-right
+					(pos2.x == pos1.x + 1 && pos2.y == pos1.y) ||///right
+					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 1) ||//down-right
+					(pos2.x == pos1.x && pos2.y == pos1.y + 1) ||//down
+					(pos2.x == pos1.x - 1 && pos2.y == pos1.y + 1) || 
+					(pos2.x == pos1.x - 1 && pos2.y == pos1.y + 1) ||//down-left
+					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 2) //||//fix
+					)//inside
+				{
+					img1->order = img2->order + 0.5f;
+				}
 			}
-			else if (img1->height == img2->height - 1) {//check
+		/*else if (img1->height == img2->height) {
+				if ((pos2.x == pos1.x + 1 && pos2.y == pos1.y) || //right
+					(pos2.x == pos1.x && pos2.y == pos1.y + 1) || //bottom
+					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 1)){ //bottom-right
+					if (img2->tile_id % 2 != 0)//FULL BLOCK
+						img1->order = img2->order - 1;
+					else//MID BLOCK
+						img1->order = img2->order + 1;
+
+				}
+				else if ((pos2.x == pos1.x - 1 && pos2.y == pos1.y) || //left
+					(pos2.x == pos1.x - 1 && pos2.y == pos1.y - 1) || //top-left
+					(pos2.y == pos1.y - 1 && pos2.x == pos1.x)) {//top
+					if (img2->tile_id % 2 != 0)//FULL BLOCK
+						img1->order = img2->order + 1;
+					else //MID BLOCK
+						img1->order = img2->order - 1;
+				}else if(pos2.x == pos1.x && pos2.y == pos1.y)
+					img1->order = img2->order + 2;
+			}*/
+			else if (img1->height == img2->height - 1.0f) {//check
 
 				if (pos2.x == pos1.x - 1 && pos2.y == pos1.y) //left
 				{
-					img1->order = img2->order + 1;
+					img1->order = img2->order + 0.5f;
+					LOG("LEFT");
 				}
 				else if (pos2.x == pos1.x + 1 && pos2.y == pos1.y)//right
 				{
-					img1->order = img2->order - 1;
+					img1->order = img2->order - 0.5f;
+					LOG("RIGHT HEIGHT");
 				}
 				else if (pos2.x == pos1.x - 1 && pos2.y == pos1.y - 1)//top-left
 				{
-					img1->order = img2->order + 1;
+					img1->order = img2->order + 0.5f;
+					LOG("TOP-LEFT");
 				}
 				else if (pos2.y == pos1.y - 1 && pos2.x == pos1.x)//top
 				{
-					img1->order = img2->order + 1;
+					img1->order = img2->order + 0.5f;
+					LOG("TOP");
 				}
-				else if (pos2.y == pos1.y && pos2.x == pos1.x) {
-					img1->order = img2->order + 1;
+				else if (pos2.y == pos1.y - 1 && pos2.x == pos1.x + 1)//top-right
+				{
+					img1->order = img2->order + 0.5f;
+					LOG("TOP-RIGHT");
 				}
+				else if (pos2.y == pos1.y && pos2.x == pos1.x)//top-right
+				{
+					img1->order = img2->order - 0.5f;
+					LOG("TOP-RIGHT");
+				}
+				
 			}
-			else if (img1->height == img2->height - 2) {
+			else if (img1->height == img2->height - 1.0f) {
 				if ((pos2.y == pos1.y - 1) && (pos2.x == pos1.x - 2))//top
 				{
-					img1->order = img2->order + 1; LOG("TOP");
+					img1->order = img2->order + 0.5f; LOG("TOP");
 				}else if (pos2.y == pos1.y - 1 && pos2.x == pos1.x - 1)//left
 				{
-					img1->order = img2->order + 1; LOG("LEFT");
+					img1->order = img2->order + 0.5f; LOG("LEFT");
 				}
 			}
 			
@@ -190,14 +230,14 @@ void j1Render::reOrder() {
 	{
 		ImageRender* img1 = *item;
 		
-		if (player != img1) {
+		/*if (player != img1) {
 			if (img1->y + img1->rect.h < player->y + player->rect.h) {
 				img1->order = player->order - 0.1;
 			}
-		}
+		}*/
 		OrderToRender.push(img1);
 
-		iPoint pos1 = App->map->WorldToMap(img1->x, img1->y); LOG("%i / %i", pos1.x, pos1.y);
+		iPoint pos1 = App->map->WorldToMap(img1->x, img1->y);
 	}
 }
 
@@ -392,7 +432,7 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 
 
 //This fucntions create a new element for the Queue with the info of the class ImageRender
-void j1Render::Push(uint order,uint height,SDL_Texture* tex, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y)//Eric
+void j1Render::Push(float order,float height,SDL_Texture* tex, int x, int y,uint tile_id, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y)//Eric
 {
 	//TODO 1: Create a function that creates a new element for the Queue with the info of the class ImageRender
 	SDL_Rect r;
@@ -408,13 +448,13 @@ void j1Render::Push(uint order,uint height,SDL_Texture* tex, int x, int y, const
 
 	if (FullMap) {
 		if (InsideCamera(r)) {
-			ImageRender* auxObject = new ImageRender(order, height, tex, x, y, section, scale, speed, angle, pivot_x, pivot_y, r);
+			ImageRender* auxObject = new ImageRender(order, height, tex, x, y, section, scale, speed, angle, pivot_x, pivot_y, tile_id, r);
 			map_sprites.push_back(auxObject);
 			//OrderToRender.push(auxObject);
 		}
 	}
 	else {
-		ImageRender* auxObject = new ImageRender(order, height, tex, x, y, section, scale, speed, angle, pivot_x, pivot_y, r);
+		ImageRender* auxObject = new ImageRender(order, height, tex, x, y, section, scale, speed, angle, pivot_x, pivot_y,tile_id, r);
 		//OrderToRender.push(auxObject);
 		map_sprites.push_back(auxObject);
 	}
@@ -479,7 +519,7 @@ bool j1Render::InsideCamera(const SDL_Rect& rect)const{
 }
 
 //Fill the vector with the entities that will be inserted in the quadtree
-void j1Render::PushVector(uint order,uint height, SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y){
+void j1Render::PushVector(float order,float height, SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y){
 	SDL_Rect r;
 	r.x = x;
 	r.y = y;
@@ -491,7 +531,7 @@ void j1Render::PushVector(uint order,uint height, SDL_Texture* texture, int x, i
 		r.w *= scale;
 		r.h *= scale;
 	}
-	ImageRender* auximage = new ImageRender(order,height, texture, x, y, section, scale, speed, angle, pivot_x, pivot_y, r);//Eric
+	ImageRender* auximage = new ImageRender(order, height, texture, x, y, section, scale, speed, angle, pivot_x, pivot_y, NULL, r);//Eric
 	Images.push_back(auximage);
 }
 

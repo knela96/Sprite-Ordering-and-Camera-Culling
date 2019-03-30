@@ -34,13 +34,13 @@ void Entity::Draw(SDL_Texture* sprites, float direction, float dt)
 		}
 	}
 	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-		height = 0;
+		height = 0.0f;
 	else if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		height = 1;
+		height = 1.0f;
 	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		height = 2;
+		height = 2.0f;
 	else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-		height = 3;
+		height = 3.0f;
 
 	if (animation != nullptr){
 		App->render->PushVector(order,height, sprites, position.x, position.y, &(animation->GetCurrentFrame(dt)), 0.2f);//Eric

@@ -14,8 +14,8 @@ class ImageRender
 {
 public:
 
-	ImageRender(uint order, uint height,SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, SDL_Rect rect) :
-		order(order),height(height),tex(texture), x(x), y(y), section(section), scale(scale), speed(speed),angle(angle),pivot_x(pivot_x), pivot_y(pivot_y),rect(rect){}
+	ImageRender(float order, float height,SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, uint tile_id, SDL_Rect rect) :
+		order(order),height(height),tex(texture), x(x), y(y), section(section), scale(scale), speed(speed),angle(angle),pivot_x(pivot_x), pivot_y(pivot_y),tile_id(tile_id),rect(rect){}
 
 	float Ordering()const
 	{
@@ -33,9 +33,9 @@ public:
 	double				angle;
 	int					pivot_x;
 	int					pivot_y;
-
+	uint				tile_id;
 	float				order;
-	uint				height;
+	float				height;
 };
 
 struct Comparer
@@ -65,13 +65,13 @@ public:
 	void ResetViewPort();
 	//void Push(uint order,SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
 	bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
-	void Push(uint order, uint height, SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
+	void Push(float order, float height, SDL_Texture* texture, int x, int y, uint tile_id,const SDL_Rect* section = NULL, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
 	bool OrderBlit(priority_queue <ImageRender*, vector<ImageRender*>, Comparer>& Queue)const;
 	bool DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool filled = true, bool use_camera = true) const;
 	bool DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
 	bool DrawCircle(int x1, int y1, int redius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
 	bool InsideCamera(const SDL_Rect& rect)const;
-	void PushVector(uint order, uint height, SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
+	void PushVector(float order, float height, SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
 	void PushFromVector(vector<ImageRender*> sprites);
 	void checkOrder(vector<ImageRender*>& sprites);
 	void SetBackgroundColor(SDL_Color color);

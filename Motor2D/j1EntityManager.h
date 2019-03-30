@@ -50,7 +50,7 @@ public:
 	bool				Slowmo = false;
 	uint				SlowAnimationCap = 1;
 	uint				order = 0;
-	uint				height = 0;
+	float				height = 0;
 	float				Slowmo_dt = 0;
 
 private:

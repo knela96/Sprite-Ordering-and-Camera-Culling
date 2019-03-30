@@ -52,7 +52,7 @@ bool Player::Start(){
 	win_height = App->win->screen_surface->h;
 	win_scale = App->win->GetScale();
 	order = 0;
-	height = 0;
+	height = 0.0f;
 	
 	return true;
 }

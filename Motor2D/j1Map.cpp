@@ -55,7 +55,8 @@ void j1Map::Draw()
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					iPoint pos = MapToWorld(x, y);
 					Rectvec.push_back(new SDL_Rect(tileset->GetTileRect(tile_id)));
-					App->render->Push(order,layer_indx,tileset->texture, pos.x, pos.y, Rectvec[tile_indx]);
+					float height = (tile_id % 2 == 0) ? 0.0f : 1.0f;
+					App->render->Push(order,layer_indx + (height + layer_indx),tileset->texture, pos.x, pos.y, tile_id, Rectvec[tile_indx]);
 					tile_indx++;
 
 
