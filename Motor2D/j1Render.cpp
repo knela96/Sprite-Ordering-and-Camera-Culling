@@ -156,7 +156,7 @@ void j1Render::reOrder() {
 					(pos2.x == pos1.x - 1 && pos2.y == pos1.y + 1) || //down-left
 					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 2)) //fix
 				{
-					if (img2->tile_id % 2 != 0)
+					if (img2->tile_id % 2 != 0)//add offset depending the block
 						img1->order = img2->order + 1.0f;
 					else
 						img1->order = img2->order + 0.5f;
