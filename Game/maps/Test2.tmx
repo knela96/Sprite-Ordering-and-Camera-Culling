@@ -8,6 +8,12 @@
    <property name="Height" type="int" value="0"/>
   </properties>
   <data>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile gid="5"/>
    <tile/>
    <tile/>
    <tile/>
@@ -102,6 +108,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="5"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="5"/>
    <tile/>
    <tile/>
    <tile/>
@@ -196,6 +208,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="5"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="5"/>
    <tile/>
    <tile/>
    <tile/>
@@ -290,6 +308,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="5"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="5"/>
    <tile/>
    <tile/>
    <tile/>
@@ -384,36 +408,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile gid="5"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10015,7 +10015,7 @@
    <property name="Height" type="int" value="1"/>
   </properties>
   <data>
-   <tile gid="5"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>

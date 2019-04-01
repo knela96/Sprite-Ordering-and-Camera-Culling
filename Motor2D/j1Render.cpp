@@ -144,7 +144,6 @@ void j1Render::reOrder() {
 			pos1.x -= 1;
 			pos1.y -= 1;
 
-			LOG("%i - %i", pos1.x, pos1.y);
 
 			if (img1->height >= img2->height) {
 				if ((pos2.x == pos1.x - 1 && pos2.y == pos1.y) || //left
@@ -152,7 +151,8 @@ void j1Render::reOrder() {
 					(pos2.x == pos1.x && pos2.y == pos1.y - 1) ||//top
 					(pos2.x == pos1.x + 1 && pos2.y == pos1.y -1) ||//top-right
 					(pos2.x == pos1.x + 1 && pos2.y == pos1.y) ||///right
-					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 1) ||//down-right
+					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 1) ||
+					(pos2.x == pos1.x + 2 && pos2.y == pos1.y + 2) ||//down-right
 					(pos2.x == pos1.x && pos2.y == pos1.y + 1) ||//down
 					(pos2.x == pos1.x - 1 && pos2.y == pos1.y + 1) || 
 					(pos2.x == pos1.x - 1 && pos2.y == pos1.y + 1) ||//down-left
@@ -160,6 +160,8 @@ void j1Render::reOrder() {
 					)//inside
 				{
 					img1->order = img2->order + 0.5f;
+					if (img2->tile_id % 2 != 0)
+						img1->order = img2->order + 1.0f;
 				}
 			}
 		/*else if (img1->height == img2->height) {
@@ -182,7 +184,7 @@ void j1Render::reOrder() {
 				}else if(pos2.x == pos1.x && pos2.y == pos1.y)
 					img1->order = img2->order + 2;
 			}*/
-			else if (img1->height == img2->height - 1.0f) {//check
+			else if (img1->height == img2->height - 1.0f || img1->height == img2->height - 2) {//check
 
 				if (pos2.x == pos1.x - 1 && pos2.y == pos1.y) //left
 				{
@@ -216,7 +218,7 @@ void j1Render::reOrder() {
 				}
 				
 			}
-			else if (img1->height == img2->height - 1.0f) {
+			/*else if (img1->height == img2->height - 1.0f) {
 				if ((pos2.y == pos1.y - 1) && (pos2.x == pos1.x - 2))//top
 				{
 					img1->order = img2->order + 0.5f; LOG("TOP");
@@ -224,9 +226,7 @@ void j1Render::reOrder() {
 				{
 					img1->order = img2->order + 0.5f; LOG("LEFT");
 				}
-			}
-			if(img2->tile_id % 2 != 0)
-				img1->order = img2->order + 0.5f;
+			}*/
 			
 		}
 		OrderToRender.push(img2);
