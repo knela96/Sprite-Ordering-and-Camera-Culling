@@ -138,8 +138,13 @@ void j1Render::reOrder() {
 		{
 			ImageRender* img1 = *item;
 
-			iPoint pos1 = App->map->WorldToMap(img1->x, img1->y + 4);
+			iPoint pos1 = App->map->WorldToMap(img1->x, img1->y + 16);
 			iPoint pos2 = App->map->WorldToMap(img2->x, img2->y);
+
+			pos1.x -= 1;
+			pos1.y -= 1;
+
+			LOG("%i - %i", pos1.x, pos1.y);
 
 			if (img1->height >= img2->height) {
 				if ((pos2.x == pos1.x - 1 && pos2.y == pos1.y) || //left
@@ -220,6 +225,8 @@ void j1Render::reOrder() {
 					img1->order = img2->order + 0.5f; LOG("LEFT");
 				}
 			}
+			if(img2->tile_id % 2 != 0)
+				img1->order = img2->order + 0.5f;
 			
 		}
 		OrderToRender.push(img2);

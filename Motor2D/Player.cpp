@@ -99,7 +99,7 @@ bool Player::Update(float dt)
 
 			position = original_pos;
 
-			iPoint pos1 = App->map->WorldToMap((int)position.x, (int)position.y); LOG("%i - %i", pos1.x, pos1.y);
+			iPoint pos1 = App->map->WorldToMap((int)position.x, (int)position.y);
 			return true;
 }
 
