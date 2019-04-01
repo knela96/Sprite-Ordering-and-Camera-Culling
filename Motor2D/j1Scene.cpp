@@ -43,7 +43,7 @@ bool j1Scene::Start()
 	App->map->LoadEntities();
 	map_height = App->map->data.height * App->map->data.tile_height;
 	map_width = App->map->data.width * App->map->data.tile_width;
-	//App->entities->AddEntity(PROP, 0, 0);
+	App->entities->AddEntity(PROP, 0, 0);
 
 	return true;
 }

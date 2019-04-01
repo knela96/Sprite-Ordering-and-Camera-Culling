@@ -192,15 +192,17 @@ void j1Render::reOrder() {
 				
 			}
 			else if (img1->height < img2->height && img2->height - img1->height > 2 && img2->height - img1->height < 4) {//FRONT DOWN  HIGH LEVELS
-				if (pos2.x == pos1.x - 1 && pos2.y == pos1.y - 2)//top-left
+				if (pos2.x == pos1.x - 1 && (pos2.y == pos1.y - 2 || pos2.y == pos1.y - 1))//top-left
 				{
 					img1->order = img2->order + 0.5f;
 				}
-			}
-			else if (img1->height < img2->height && img2->height - img1->height > 2 && img2->height - img1->height < 6) {//FRONT RIGHT HIGH LEVELS
-				if (pos2.x == pos1.x - 2 && pos2.y == pos1.y - 1)//top-left
+				else if ((pos2.x == pos1.x - 2 || pos2.x == pos1.x - 1) && pos2.y == pos1.y)//top-left
 				{
 					img1->order = img2->order + 0.5f;
+				}
+				else if ((pos2.x == pos1.x + 2 || pos2.x == pos1.x + 1) && pos2.y == pos1.y)//top-left
+				{
+					img1->order = img2->order - 0.5f;
 				}
 			}
 		}
