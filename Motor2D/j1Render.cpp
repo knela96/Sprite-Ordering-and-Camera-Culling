@@ -150,84 +150,59 @@ void j1Render::reOrder() {
 					(pos2.x == pos1.x - 1 && pos2.y == pos1.y - 1) || //top-left
 					(pos2.x == pos1.x && pos2.y == pos1.y - 1) ||//top
 					(pos2.x == pos1.x + 1 && pos2.y == pos1.y -1) ||//top-right
-					(pos2.x == pos1.x + 1 && pos2.y == pos1.y) ||///right
-					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 1) ||
+					(pos2.x == pos1.x + 1 && pos2.y == pos1.y) ||//right
+					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 1) ||//top-down
 					(pos2.x == pos1.x + 2 && pos2.y == pos1.y + 2) ||//down-right
 					(pos2.x == pos1.x && pos2.y == pos1.y + 1) ||//down
-					(pos2.x == pos1.x - 1 && pos2.y == pos1.y + 1) || 
-					(pos2.x == pos1.x - 1 && pos2.y == pos1.y + 1) ||//down-left
-					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 2) //||//fix
-					)//inside
+					(pos2.x == pos1.x - 1 && pos2.y == pos1.y + 1) || //down-left
+					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 2)) //fix
 				{
-					img1->order = img2->order + 0.5f;
 					if (img2->tile_id % 2 != 0)
 						img1->order = img2->order + 1.0f;
+					else
+						img1->order = img2->order + 0.5f;
 				}
 			}
-		/*else if (img1->height == img2->height) {
-				if ((pos2.x == pos1.x + 1 && pos2.y == pos1.y) || //right
-					(pos2.x == pos1.x && pos2.y == pos1.y + 1) || //bottom
-					(pos2.x == pos1.x + 1 && pos2.y == pos1.y + 1)){ //bottom-right
-					if (img2->tile_id % 2 != 0)//FULL BLOCK
-						img1->order = img2->order - 1;
-					else//MID BLOCK
-						img1->order = img2->order + 1;
-
-				}
-				else if ((pos2.x == pos1.x - 1 && pos2.y == pos1.y) || //left
-					(pos2.x == pos1.x - 1 && pos2.y == pos1.y - 1) || //top-left
-					(pos2.y == pos1.y - 1 && pos2.x == pos1.x)) {//top
-					if (img2->tile_id % 2 != 0)//FULL BLOCK
-						img1->order = img2->order + 1;
-					else //MID BLOCK
-						img1->order = img2->order - 1;
-				}else if(pos2.x == pos1.x && pos2.y == pos1.y)
-					img1->order = img2->order + 2;
-			}*/
 			else if (img1->height == img2->height - 1.0f || img1->height == img2->height - 2) {//check
 
 				if (pos2.x == pos1.x - 1 && pos2.y == pos1.y) //left
 				{
 					img1->order = img2->order + 0.5f;
-					LOG("LEFT");
 				}
 				else if (pos2.x == pos1.x + 1 && pos2.y == pos1.y)//right
 				{
 					img1->order = img2->order - 0.5f;
-					LOG("RIGHT HEIGHT");
 				}
 				else if (pos2.x == pos1.x - 1 && pos2.y == pos1.y - 1)//top-left
 				{
 					img1->order = img2->order + 0.5f;
-					LOG("TOP-LEFT");
 				}
 				else if (pos2.y == pos1.y - 1 && pos2.x == pos1.x)//top
 				{
 					img1->order = img2->order + 0.5f;
-					LOG("TOP");
 				}
 				else if (pos2.y == pos1.y - 1 && pos2.x == pos1.x + 1)//top-right
 				{
 					img1->order = img2->order + 0.5f;
-					LOG("TOP-RIGHT");
 				}
 				else if (pos2.y == pos1.y && pos2.x == pos1.x)//top-right
 				{
 					img1->order = img2->order - 0.5f;
-					LOG("TOP-RIGHT");
 				}
 				
 			}
-			/*else if (img1->height == img2->height - 1.0f) {
-				if ((pos2.y == pos1.y - 1) && (pos2.x == pos1.x - 2))//top
+			else if (img1->height < img2->height && img2->height - img1->height > 2 && img2->height - img1->height < 4) {//FRONT DOWN  HIGH LEVELS
+				if (pos2.x == pos1.x - 1 && pos2.y == pos1.y - 2)//top-left
 				{
-					img1->order = img2->order + 0.5f; LOG("TOP");
-				}else if (pos2.y == pos1.y - 1 && pos2.x == pos1.x - 1)//left
-				{
-					img1->order = img2->order + 0.5f; LOG("LEFT");
+					img1->order = img2->order + 0.5f;
 				}
-			}*/
-			
+			}
+			else if (img1->height < img2->height && img2->height - img1->height > 2 && img2->height - img1->height < 6) {//FRONT RIGHT HIGH LEVELS
+				if (pos2.x == pos1.x - 2 && pos2.y == pos1.y - 1)//top-left
+				{
+					img1->order = img2->order + 0.5f;
+				}
+			}
 		}
 		OrderToRender.push(img2);
 	}
